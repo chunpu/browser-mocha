@@ -39,6 +39,7 @@ Options
 
 Use more options like below
 
+```js
 browserMocha('mocha code', {
 	  ui: 'bdd'
 	, reporter: 'spec'
@@ -52,3 +53,4 @@ browserMocha('mocha code', {
 		, platform: 'linux'
 	}
 }, callback)
+```

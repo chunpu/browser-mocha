@@ -30,9 +30,7 @@ basic usage
 ```js
 var browserMocha = require('./')
 
-browserMocha('some mocha code', {
-	ui: 'bdd'
-}, function(err, data) {
+browserMocha('some mocha code', {ui: 'bdd'}, function(err, data) {
 	browserMocha.print(data.logs)
 })
 ```
@@ -57,6 +55,7 @@ Options
 
 Use more options like below
 
+```js
 browserMocha('mocha code', {
 	  ui: 'bdd'
 	, reporter: 'spec'
@@ -70,6 +69,7 @@ browserMocha('mocha code', {
 		, platform: 'linux'
 	}
 }, callback)
+```
 
 License
 ---
