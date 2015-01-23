@@ -1,11 +1,11 @@
 {
   "name": "browser-mocha",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "run browser mocha test by web driver",
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec -t 5000 test/*.js",
-	"readme": "pretty-readme > readme.md"
+    "readme": "pretty-readme > readme.md"
   },
   "author": "chunpu",
   "license": "ISC",
@@ -24,5 +24,13 @@
     "mocha",
     "test",
     "webdriver"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chunpu/browser-mocha.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chunpu/browser-mocha/issues"
+  },
+  "homepage": "https://github.com/chunpu/browser-mocha"
 }
