@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <title>mini-jQuery</title>
+    <link rel="stylesheet" href="http://rawgit.com/visionmedia/mocha/master/mocha.css">
+	<% if (shim) { %>
+	<script src='http://rawgit.com/es-shims/es5-shim/master/es5-shim.min.js'></script>
+	<% } %>
+    <script src='http://rawgit.com/visionmedia/mocha/master/mocha.js'></script>
+  </head>
+  <body>
+    <script>
+	// https://raw.githubusercontent.com/andrewplummer/Sugar/master/release/sugar.min.js
+	/*
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== 'function') {
+      // closest thing possible to the ECMAScript 5
+      // internal IsCallable function
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+    }
+
+    var aArgs   = Array.prototype.slice.call(arguments, 1),
+        fToBind = this,
+        fNOP    = function() {},
+        fBound  = function() {
+          return fToBind.apply(this instanceof fNOP && oThis
+                 ? this
+                 : oThis,
+                 aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
+
+    fNOP.prototype = this.prototype;
+    fBound.prototype = new fNOP();
+
+    return fBound;
+  };
+}*/
+        var __logs = []
+        function __push(arr) {
+            __logs.push(arr)
+        }
+        if (!window.__print) {
+            __print = function(x) {
+                console.debug(x)
+            }
+        }
+        Mocha.process.stdout.write = function() {
+            __push(arguments)
+        }
+        console.log = function() {
+            __push(arguments)
+        }
+        mocha.setup({
+            ui: '<%= ui%>',
+            timeout: 3000,
+            reporter: '<%= reporter%>'
+        })
+    </script>
+    <script>
+        // template
+        <%- script %>
+    </script>
+	<script>
+	try {
+		var runner = mocha.run()
+		runner.on('end', function() {
+			var obj = {
+				total: runner.total,
+				failures: runner.failures,
+				logs: __logs
+			}
+			__print(obj)
+		})
+	} catch (e) {
+		__print({
+			error: e.message
+		})
+	}
+	</script>
+  </body>
+</html>

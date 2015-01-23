@@ -1,0 +1,28 @@
+{
+  "name": "browser-mocha",
+  "version": "1.0.0",
+  "description": "run browser mocha test by web driver",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec -t 5000 test/*.js",
+	"readme": "pretty-readme > readme.md"
+  },
+  "author": "chunpu",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^2.1.1",
+    "ejs": "latest",
+    "wd-exec": "latest"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "mocha",
+    "test",
+    "webdriver"
+  ]
+}
