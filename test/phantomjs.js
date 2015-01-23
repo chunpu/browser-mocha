@@ -28,6 +28,11 @@ describe('basic test', function() {
 			done()
 		})
 	})
+	it('should get script for debug', function() {
+		var script = bm.getScript(str)
+		assert(/mocha/.test(script), 'has mocha')
+		assert(/runner/.test(script), 'has runner')
+	})
 	after(function() {
 		spawn('pkill', ['-9', 'phantomjs'])
 	})

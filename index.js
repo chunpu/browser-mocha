@@ -8,20 +8,28 @@ module.exports = exports = run
 
 exports.template = fs.readFileSync(path.resolve(__dirname, 'assets', 'template.ejs'), 'utf8')
 
+exports.getScript = function(script, opt) {
+	opt = opt || {}
+	script = ejs.render(exports.template, {
+		  script: script
+		, ui: opt.ui || 'bdd'
+		, timeout: opt.timeout
+		, reporter: opt.reporter || 'spec'
+		, title: opt.title || 'untitled'
+		, shim: opt.shim || true
+	})
+	return script
+}
+
 function noop() {}
 
 function run(script, opt, cb) {
 	if ('function' == typeof opt) {
 		return run(script, {}, opt)
 	}
-	var timeout = opt.timeout || 10 * 1000
-	script = ejs.render(exports.template, {
-		  script: script
-		, ui: opt.ui || 'bdd'
-		, timeout: timeout
-		, reporter: opt.reporter || 'spec'
-		, shim: opt.shim || true
-	})
+	opt = opt || {}
+	opt.timeout = opt.timeout || 10 * 1000
+	script = exports.getScript(script, opt)
 	script = 'window.__print = arguments[arguments.length - 1]; document.write(unescape("' + escape(script) + '")); document.close()'
 	debug('async script', script)
 	cb = cb || noop
@@ -34,7 +42,7 @@ function run(script, opt, cb) {
 		}
 		session.exec('timeouts/async_script', {
 			body: {
-				ms: timeout * 10 // 10 times of mocha async timeout
+				ms: opt.timeout * 10 // 10 times of mocha async timeout
 			}
 		}, function(err, res) {
 			if (err) return cb(err)
