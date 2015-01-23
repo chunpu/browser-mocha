@@ -12,14 +12,14 @@ Usage
 basic usage
 
 ```js
-var browserMocha = require('./')
+var browserMocha = require('browser-mocha')
 
 browserMocha('some mocha code', {ui: 'bdd'}, function(err, data) {
 	browserMocha.print(data.logs)
 })
 ```
 
-data is mocha runner end value
+data is some of mocha runner value
 
 - `logs` array of print logs, can use `browserMocha.print` print to stdout
 - `total` count of test cases
