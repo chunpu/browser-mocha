@@ -19,9 +19,9 @@ describe('basic test', function() {
 		})
 	})
 	it('should return fails, total, logs, session', function(done) {
-		bm(str, function(err, data, session) {
+		bm(str, function(err, data) {
 			assert(!err)
-			assert(session && 'object' == typeof session.browser)
+			assert(data.session && 'object' == typeof data.session.browser)
 			assert(Array.isArray(data.logs), 'logs is array')
 			assert(1 == data.failures, 'has one failure')
 			assert(2 == data.total, 'has 2 cases')

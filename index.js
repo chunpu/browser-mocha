@@ -24,7 +24,10 @@ exports.getScript = function(script, opt) {
 function noop() {}
 
 function run(script, opt, cb) {
-	if ('function' == typeof opt) {
+
+	if (script && script.script) {
+		return run(script.script, script, opt)
+	} else if ('function' == typeof opt) {
 		return run(script, {}, opt)
 	}
 	opt = opt || {}
@@ -58,6 +61,7 @@ function run(script, opt, cb) {
 				}
 				if (value && 'object' == typeof value) {
 					if (value.error) return cb(new Error('Page error: ' + value.error))
+					value.session = session
 					cb(null, value, session)
 					session.exit()
 				} else {
