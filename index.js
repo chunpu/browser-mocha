@@ -6,7 +6,7 @@ var debug = require('debug')('browser-mocha')
 
 module.exports = exports = run
 
-exports.template = fs.readFileSync(path.resolve(__dirname, 'assets', 'template.ejs'), 'utf8')
+exports.template = fs.readFileSync(path.resolve(__dirname, 'assets', 'fill.js'), 'utf8')
 
 exports.getScript = function(script, opt) {
 	opt = opt || {}
@@ -33,7 +33,8 @@ function run(script, opt, cb) {
 	opt = opt || {}
 	opt.timeout = opt.timeout || 10 * 1000
 	script = exports.getScript(script, opt)
-	script = 'window.__print = arguments[arguments.length - 1]; document.write(unescape("' + escape(script) + '")); document.close()'
+	//script = 'window.__print = arguments[arguments.length - 1]; document.write(unescape("' + escape('<script>__print({a: 2012443})</script>') + '")); document.close()'
+	script = 'window.__print = arguments[arguments.length - 1];' + script
 	debug('async script', script)
 	cb = cb || noop
 	var session = Session()

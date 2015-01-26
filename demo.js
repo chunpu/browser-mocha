@@ -14,13 +14,13 @@ if (isSauce) {
 		sauceLabs: true,
 		browser: {
 			name: 'internet explorer',
-			version: '8',
-			platform: 'Windows XP'
+			version: '6',
+			//platform: 'Windows XP'
 		}
 	}
 }
 
 browserMocha(code, opt, function(err, val) {
-	if (err) return console.error(err)
+	if (err) return console.error(err, val)
 	browserMocha.print(val.logs)
 })
