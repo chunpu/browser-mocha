@@ -55,6 +55,7 @@ function run(script, opt, cb) {
 					args: []
 				}
 			}, function(err, value) {
+				session.exit()
 				if (err) {
 					debug('exec fail', err)
 					return cb(err)
@@ -63,7 +64,6 @@ function run(script, opt, cb) {
 					if (value.error) return cb(new Error('Page error: ' + value.error))
 					value.session = session
 					cb(null, value, session)
-					session.exit()
 				} else {
 					cb(new Error('Unknow error'))
 				}
