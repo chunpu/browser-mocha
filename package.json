@@ -1,6 +1,6 @@
 {
   "name": "browser-mocha",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "run browser mocha test by web driver",
   "main": "index.js",
   "scripts": {

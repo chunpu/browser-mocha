@@ -33,7 +33,6 @@ function run(script, opt, cb) {
 	opt = opt || {}
 	opt.timeout = opt.timeout || 10 * 1000
 	script = exports.getScript(script, opt)
-	//script = 'window.__print = arguments[arguments.length - 1]; document.write(unescape("' + escape('<script>__print({a: 2012443})</script>') + '")); document.close()'
 	script = 'window.__print = arguments[arguments.length - 1];' + script
 	debug('async script', script)
 	cb = cb || noop
@@ -56,7 +55,9 @@ function run(script, opt, cb) {
 					args: []
 				}
 			}, function(err, value) {
-				session.exit()
+				session.exit(function(err) {
+					debug('exit: %o', err) // make sure it finished
+				})
 				if (err) {
 					debug('exec fail', err)
 					return cb(err)
