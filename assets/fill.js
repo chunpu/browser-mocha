@@ -39,8 +39,9 @@ if (!window.__print) {
 	}
 }
 console.log = function() {
-	[].push.call(arguments, '\n')
-	__push(arguments)
+    var arr = [].slice.call(arguments)
+    arr.push('\n')
+    __push(arr)
 }
 
 var arr = ['http://rawgit.com/es-shims/es5-shim/master/es5-shim.min.js', 'http://rawgit.com/visionmedia/mocha/master/mocha.js']
