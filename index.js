@@ -3,6 +3,7 @@ var ejs = require('ejs')
 var fs = require('fs')
 var path = require('path')
 var debug = require('debug')('browser-mocha')
+var util = require('util')
 
 module.exports = exports = run
 
@@ -54,21 +55,23 @@ function run(script, opt, cb) {
 					script: script,
 					args: []
 				}
-			}, function(err, value) {
-				session.exit(function(err) {
-					debug('exit: %o', err) // make sure it finished
+			}, function(execErr, value) {
+				session.exit(function(exitErr) {
+					// always exit no matter error or not
+					debug('exit')
+					var err = execErr || exitErr
+					if (err) {
+						debug('exec fail', err)
+						return cb(err)
+					}
+					if (value && 'object' == typeof value) {
+						if (value.error) return cb(new Error('Page error: ' + value.error))
+						value.session = session
+						cb(null, value, session)
+					} else {
+						cb(new Error('Unknow error'))
+					}
 				})
-				if (err) {
-					debug('exec fail', err)
-					return cb(err)
-				}
-				if (value && 'object' == typeof value) {
-					if (value.error) return cb(new Error('Page error: ' + value.error))
-					value.session = session
-					cb(null, value, session)
-				} else {
-					cb(new Error('Unknow error'))
-				}
 			})
 		})
 	})
@@ -77,7 +80,7 @@ function run(script, opt, cb) {
 exports.print = function(logs) {
 	if (Array.isArray(logs)) {
 		logs.forEach(function(log) {
-			console.log.apply(console, log)
+			process.stdout.write(util.format.apply(util, log))
 		})
 	}
 }

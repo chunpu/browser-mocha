@@ -1,7 +1,7 @@
 !function() {
 
-var head = document.getElementsByTagName('head')[0]
-function getSyncScript(url, cb) {
+var __head = document.getElementsByTagName('head')[0]
+function __getSyncScript(url, cb) {
 	var script = document.createElement('script')
 	script.onload = script.onerror = script.onreadystatechange = function(ev) {
 		var state = script.readyState
@@ -12,10 +12,10 @@ function getSyncScript(url, cb) {
 		}
 	}
 	script.src = url
-	head.appendChild(script)
+	__head.appendChild(script)
 }
 
-function async(arr, fn, cb) {
+function __async(arr, fn, cb) {
 	var len = arr.length
 	var count = 0
 	for (var i = 0; i < len; i++) {
@@ -39,12 +39,13 @@ if (!window.__print) {
 	}
 }
 console.log = function() {
+	[].push.call(arguments, '\n')
 	__push(arguments)
 }
 
 var arr = ['http://rawgit.com/es-shims/es5-shim/master/es5-shim.min.js', 'http://rawgit.com/visionmedia/mocha/master/mocha.js']
 
-async(arr, getSyncScript, function() {
+__async(arr, __getSyncScript, function() {
 	Mocha.process.stdout.write = function() {
 		__push(arguments)
 	}
@@ -55,7 +56,7 @@ async(arr, getSyncScript, function() {
 	})
 
 	// template
-	<%- script %>
+	;<%- script %>
 
 	try {
 		var runner = mocha.run()
