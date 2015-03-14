@@ -1,8 +1,8 @@
+var debug = require('debug')('browser-mocha')
 var Session = require('wd-exec')
 var ejs = require('ejs')
 var fs = require('fs')
 var path = require('path')
-var debug = require('debug')('browser-mocha')
 var util = require('util')
 
 module.exports = exports = run
@@ -39,11 +39,25 @@ function run(script, opt, cb) {
 	cb = cb || noop
 	var session = Session()
 	opt = opt || {}
+	debug('options: %o', opt)
+	opt.script = script
 	session.init(opt, function(err, value) {
 		if (err) {
 			debug('init fail: %o', err)
 			return cb(err)
 		}
+		if (opt.url) {
+			session.open(opt.url, function(err) {
+				if (err) return cb(err)
+				exec(session, opt, cb)
+			})
+		} else {
+			exec(session, opt, cb)
+		}
+	})
+}
+
+function exec(session, opt, cb) {
 		session.exec('timeouts/async_script', {
 			body: {
 				ms: opt.timeout * 10 // 10 times of mocha async timeout
@@ -52,7 +66,7 @@ function run(script, opt, cb) {
 			if (err) return cb(err)
 			session.exec('execute_async', {
 				body: {
-					script: script,
+					script: opt.script,
 					args: []
 				}
 			}, function(execErr, value) {
@@ -74,7 +88,7 @@ function run(script, opt, cb) {
 				})
 			})
 		})
-	})
+
 }
 
 exports.print = function(logs) {

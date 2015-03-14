@@ -43,8 +43,7 @@ console.log = function() {
     arr.push('\n')
     __push(arr)
 }
-
-var arr = ['http://rawgit.com/es-shims/es5-shim/master/es5-shim.min.js', 'http://rawgit.com/visionmedia/mocha/master/mocha.js']
+var arr = ['http://rawgit.com/es-shims/es5-shim/master/es5-shim.min.js', 'http://rawgit.com/mochajs/mocha/2.1.0/mocha.js']
 
 __async(arr, __getSyncScript, function() {
 	Mocha.process.stdout.write = function() {
